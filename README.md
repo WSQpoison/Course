@@ -1,6 +1,7 @@
 ## 启动项目
 
 python版本需要为python3
+windows上应该不能运行，所以请在linux或macOS上运行
 
 ### 1. 依赖包安装
 
