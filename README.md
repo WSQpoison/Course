@@ -7,8 +7,10 @@ python版本需要为python3
 **安装依赖之前强烈建议用conda或venv创建一个新的python3环境。**
 
 在项目根目录下执行命令`pip install -r requirements.txt`，等待安装完成。
+### 2. 数据库
+因为使用的是sqlite，所以不需要额外配置数据库。
 
-### 2. 运行
+### 3. 运行
 
 项目根目录下执行命令`python index.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。使用账号`11111111`，密码`abc`即可登录名为狗蛋的个人资料页面。
 
