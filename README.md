@@ -1,14 +1,19 @@
+这只是一个测试用的代码，没有任何结构，所有代码服务端代码都在index.py当中，暂时不需要理解它。
+服务端框架用的flask，它的模板渲染引擎是jinja2，所以跪求打算做前端的同学学习一下jinja2。
 ## 启动项目
 
 python版本需要为python3
+windows上应该不能运行，所以请在linux或macOS上运行
 
 ### 1. 依赖包安装
 
 **安装依赖之前强烈建议用conda或venv创建一个新的python3环境。**
 
 在项目根目录下执行命令`pip install -r requirements.txt`，等待安装完成。
+### 2. 数据库
+因为使用的是sqlite，所以不需要额外配置数据库。
 
-### 2. 运行
+### 3. 运行
 
 项目根目录下执行命令`python index.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。使用账号`11111111`，密码`abc`即可登录名为狗蛋的个人资料页面。
 
