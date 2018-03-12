@@ -1,15 +1,17 @@
 import os
+import random
 
 from flask import Flask, render_template, redirect, url_for, flash, session
 from flask import request
 from flask_script import Manager
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, FileField
 from wtforms.validators import DataRequired, Length, Email
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required
 from flask_login import current_user, logout_user
+from werkzeug.utils import secure_filename
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -46,6 +48,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('登录')
 
 class EditForm(FlaskForm):
+    head = FileField('选择图片')
     email = StringField('邮箱', validators=[Email()])
     submit = SubmitField('提交')
 
@@ -81,7 +84,12 @@ def user_profile(id):
     if not current_user.is_authenticated or current_user.id != int(id):
         flash('请先登录')
         return redirect('/login')
-    return render_template('user_profile.html', user=current_user)
+    head = '/static/heads/default.jpg'
+    f = [f for f in os.listdir('static/heads') \
+               if f.startswith(str(current_user.id))]
+    if len(f) != 0:
+        head = os.path.join('/static/heads', f[0])
+    return render_template('user_profile.html', user=current_user, head=head)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -89,6 +97,16 @@ def edit_profile():
     form = EditForm()
     if form.validate_on_submit():
         current_user.email = form.email.data
+        head = form.head.data
+        if head != '':
+            for f in os.listdir('static/heads'):
+                if f.startswith(str(current_user.id)):
+                    os.remove(os.path.join('static/heads', f))
+            filename = secure_filename(head.filename)
+            head.save(os.path.join(
+                basedir, 'static', 'heads',
+                str(current_user.id) + str(random.choice(range(100))) + '.jpg'
+            ))
         db.session.add(current_user)
         db.session.commit()
         flash('个人简介更新成功')

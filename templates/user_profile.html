@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
-<img class="img-rounded thumbnail" width="250" height="250" src="/static/heads/test.jpg" />
+<img class="img-rounded thumbnail" width="250" height="250" src="{{ head }}" />
 <div class="profile-header">
     <h1> {{ user.name }} </h1>
     <p> {{ user.email }} </p>
