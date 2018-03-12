@@ -29,6 +29,9 @@ db = SQLAlchemy(app)
 sid_length = 8
 
 class User(UserMixin, db.Model):
+    '''
+    用户数据模型
+    '''
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
@@ -42,12 +45,18 @@ class User(UserMixin, db.Model):
         return pw == self.password
 
 class LoginForm(FlaskForm):
+    '''
+    登录界面使用的表单
+    '''
     id = StringField('账号', validators=[DataRequired(), Length(min=sid_length, \
                                                                 max=sid_length)])
     password = PasswordField('密码', validators=[DataRequired()])
     submit = SubmitField('登录')
 
 class EditForm(FlaskForm):
+    '''
+    编辑个人资料界面使用的表单
+    '''
     head = FileField('选择图片')
     email = StringField('邮箱', validators=[Email()])
     submit = SubmitField('提交')
@@ -118,16 +127,6 @@ def edit_profile():
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-def validate(sid, password):
-    std_password = get_password(sid)
-    if std_password == password:
-        return True
-    else:
-        return False
-
-def get_password(sid):
-    return users.get(sid, None)
 
 if __name__ == '__main__':
     manager.run()
