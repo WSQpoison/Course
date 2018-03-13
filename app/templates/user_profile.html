@@ -6,6 +6,8 @@
 <div class="profile-header">
     <h1> {{ user.name }} </h1>
     <p> {{ user.email }} </p>
+    {% if current_user.id == user.id %}
     <a class="btn btn-default" href="{{ url_for('main.edit_profile') }}">编辑</a>
+    {% endif %}
 </div>
 {% endblock %}

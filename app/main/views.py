@@ -8,8 +8,8 @@ from flask_login import UserMixin, login_required
 from flask_login import current_user, logout_user, login_user
 from werkzeug.utils import secure_filename
 
-from .forms import LoginForm, EditForm
-from ..models import User
+from .forms import LoginForm, EditForm, PostForm
+from ..models import User, Post
 from .. import db
 
 basedir = 'app'
@@ -28,7 +28,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, False)
             return redirect(request.args.get('next')
-                            or url_for('.user_profile', id=user.id))
+                            or url_for('.post'))
         flash('学号或密码错误')
     return render_template('login.html', form=form)
 
@@ -39,15 +39,26 @@ def users():
 
 @main.route('/user_profile/<id>')
 def user_profile(id):
-    if not current_user.is_authenticated or current_user.id != int(id):
-        flash('请先登录')
-        return redirect('/login')
     head = '/static/heads/default.jpg'
     f = [f for f in os.listdir('app/static/heads') \
-               if f.startswith(str(current_user.id))]
+               if f.startswith(str(id))]
     if len(f) != 0:
         head = os.path.join('/static/heads', f[0])
-    return render_template('user_profile.html', user=current_user, head=head)
+    user = User.query.filter_by(id=id).first()
+    return render_template('user_profile.html', user=user, head=head)
+
+@main.route('/post', methods=['GET', 'POST'])
+@login_required
+def post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('.post'))
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('posts.html', form=form, posts=posts)
 
 @main.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -77,6 +88,3 @@ def edit_profile():
 def logout():
     logout_user()
     return redirect(url_for('.index'))
-
-if __name__ == '__main__':
-    manager.run()

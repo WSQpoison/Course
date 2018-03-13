@@ -3,10 +3,14 @@ from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_moment import Moment
+from flask_pagedown import PageDown
 from config import config
 
 bootstrap = Bootstrap()
 loginManager = LoginManager()
+moment = Moment()
+pagedown = PageDown()
 
 db = SQLAlchemy()
 
@@ -17,6 +21,8 @@ def create_app(config_name):
 
     bootstrap.init_app(app)
     loginManager.init_app(app)
+    moment.init_app(app)
+    pagedown.init_app(app)
     db.init_app(app)
 
     from .main import main as main_blueprint

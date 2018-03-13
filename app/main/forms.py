@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, FileField
+from wtforms import TextAreaField
+from flask_pagedown.fields import PageDownField
 from wtforms.validators import DataRequired, Length, Email
 
 sid_length = 8
@@ -19,4 +21,8 @@ class EditForm(FlaskForm):
     '''
     head = FileField('选择图片')
     email = StringField('邮箱', validators=[Email()])
+    submit = SubmitField('提交')
+
+class PostForm(FlaskForm):
+    body = PageDownField('请输入你的问题', validators=[DataRequired()])
     submit = SubmitField('提交')
