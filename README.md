@@ -41,7 +41,7 @@ $ . venv/bin/activate
 
 ### 3. 运行
 
-项目根目录下执行命令`python index.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。
+项目根目录下执行命令`python manage.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。
 
 ## 用户创建
 
@@ -52,14 +52,13 @@ $ . venv/bin/activate
 在根目录下执行以下命令就可以创建一个账号为`22222222`，密码为`abc`，姓名为`二狗`，邮箱为`999@qq.com`的用户。
 
 ```python
-python index.py shell     # 进入shell模式
->>> from index import db, User
+python manage.py shell     # 进入shell模式
 >>> u = User(id='22222222', name='二狗', password='abc', email='999@qq.com')
 >>> db.session.add(u)
 >>> db.session.commit()
 ```
 
-执行完上述命令后可以直接输入`quit()`退出，然后用`python index.py runserver`运行服务器，用浏览器实验是否已经添加该用户。也可以暂时不退出`shell`模式，继续输入:
+执行完上述命令后可以直接输入`quit()`退出，然后用`python manage.py runserver`运行服务器，用浏览器实验是否已经添加该用户。也可以暂时不退出`shell`模式，继续输入:
 
 ```python
 >>> User.query.all()
