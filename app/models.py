@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
     password = db.Column(db.String(64))
+    registerTime = db.Column(db.DateTime, default=datetime.utcnow)
     email = db.Column(db.String(64), nullable=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
