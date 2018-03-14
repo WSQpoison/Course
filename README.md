@@ -2,11 +2,17 @@
 
 **flask**框架模板渲染引擎是**jinja2**，所以有兴趣参与前端开发的同学学习一下**jinja2**。
 
+[TOC]
+
 ## 目前已实现功能
 
 * 用户登录、登出
 * 所有用户的可公开资料可任意浏览，用户可以修改自己的资料
 * 支持markdown的简单提问功能（回答功能尚未实现）
+
+
+
+* 数据库迁移
 
 ## 项目配置
 
@@ -45,6 +51,17 @@ $ . venv/bin/activate
 ### 2. 数据库
 因为使用的是**sqlite**，所以不需要额外配置数据库。
 
+#### 数据库迁移
+
+开发阶段如果对数据库模型进行了修改，可以通过以下命令更新数据库，同时不影响数据库中已存在的记录。
+
+```python
+python manage.py db migrate -m 'xxxxxxxx'
+python manage.py db upgrade
+```
+
+其中'xxxxxxxx'为对本次更新的描述。
+
 ### 3. 运行
 
 项目根目录下执行命令`python manage.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。
@@ -79,14 +96,3 @@ python manage.py shell     # 进入shell模式
 
 该命令执行后可以看到有这些用户---狗蛋、二狗和二哈。
 
-### 2. 开发时快速创建用户
-
-暂时没有实现数据库迁移的功能，所以定义了`quick_db()`函数来快速创建用户。使用前请先删除根目录下的`.sqlite`文件，函数使用方式如下：
-
-```python
-python manage.py shell
->>> from manage import quick_db
->>> quick_db()
-```
-
-这样可以快速创建Gihub中已有的两个用户。
