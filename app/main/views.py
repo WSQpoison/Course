@@ -39,11 +39,7 @@ def users():
 
 @main.route('/user_profile/<id>')
 def user_profile(id):
-    head = '/static/heads/default.jpg'
-    f = [f for f in os.listdir('app/static/heads') \
-               if f.startswith(str(id))]
-    if len(f) != 0:
-        head = os.path.join('/static/heads', f[0])
+    head = get_user_head(id)
     user = User.query.filter_by(id=id).first()
     return render_template('user_profile.html', user=user, head=head)
 
@@ -58,7 +54,8 @@ def post():
         db.session.commit()
         return redirect(url_for('.post'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('posts.html', form=form, posts=posts)
+    head = get_user_head(current_user.id)
+    return render_template('posts.html', form=form, posts=posts, head=head)
 
 @main.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -67,7 +64,6 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.email = form.email.data
         head = form.head.data
-        print('%r' % head)
         if head != '':
             for f in os.listdir('app/static/heads'):
                 if f.startswith(str(current_user.id)):
@@ -88,3 +84,11 @@ def edit_profile():
 def logout():
     logout_user()
     return redirect(url_for('.index'))
+
+def get_user_head(id):
+    head = '/static/heads/default.jpg'
+    f = [f for f in os.listdir('app/static/heads') \
+               if f.startswith(str(id))]
+    if len(f) != 0:
+        head = os.path.join('/static/heads', f[0])
+    return head

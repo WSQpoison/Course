@@ -17,12 +17,28 @@ class User(UserMixin, db.Model):
     registerTime = db.Column(db.DateTime, default=datetime.utcnow)
     email = db.Column(db.String(64), nullable=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    courses = db.relationship('Role', back_populates='user')
 
     def __repr__(self):
         return '<User %r>' % self.name
 
     def verify_password(self, pw):
         return pw == self.password
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'),
+                          primary_key=True)
+    role = db.Column(db.String, nullable=False)
+    user = db.relationship('User', back_populates='courses')
+    course = db.relationship('Course', back_populates='users')
+
+class Course(db.Model):
+    __tablename__ = 'courses'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    users = db.relationship('Role', back_populates='course')
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -40,8 +56,9 @@ class Post(db.Model):
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
+
     def __repr__(self):
-        return 'Post %d' % id
+        return 'Post %d' % self.id
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 
