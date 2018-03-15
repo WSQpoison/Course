@@ -26,3 +26,7 @@ class EditForm(FlaskForm):
 class PostForm(FlaskForm):
     body = PageDownField('请输入你的问题', validators=[DataRequired()])
     submit = SubmitField('提交')
+
+class CreateCourseForm(FlaskForm):
+    course_name = StringField('课程名', validators=[DataRequired()])
+    submit = SubmitField('提交')

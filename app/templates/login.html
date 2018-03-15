@@ -2,5 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
-{{ wtf.quick_form(form) }}
+<div class="col-md-4 col-md-offset-4">
+    {{ wtf.quick_form(form) }}
+</div>
 {% endblock %}

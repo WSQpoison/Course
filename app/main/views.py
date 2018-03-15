@@ -8,8 +8,8 @@ from flask_login import UserMixin, login_required
 from flask_login import current_user, logout_user, login_user
 from werkzeug.utils import secure_filename
 
-from .forms import LoginForm, EditForm, PostForm
-from ..models import User, Post
+from .forms import *
+from ..models import *
 from .. import db
 
 basedir = 'app'
@@ -84,6 +84,32 @@ def edit_profile():
 def logout():
     logout_user()
     return redirect(url_for('.index'))
+
+@main.route('/create-course', methods=['GET', 'POST'])
+def create_course():
+    form = CreateCourseForm()
+    if form.validate_on_submit():
+        course = Course(name=form.course_name.data)
+        role = Role(role='teacher')
+        role.user = current_user
+        role.course = course
+        db.session.add(course)
+        db.session.add(role)
+        db.session.commit()
+        flash('课程创建成功')
+        return redirect(url_for('.course_list'))
+    return render_template('create_course.html', form=form)
+
+@main.route('/course-list')
+def course_list():
+    courses = []
+    for role in current_user.courses:
+        for user in role.course.users:
+            if user.role == 'teacher':
+                teacher = user.user
+        courses.append((role.course, teacher))
+
+    return render_template('course_list.html', courses=courses)
 
 def get_user_head(id):
     head = '/static/heads/default.jpg'
