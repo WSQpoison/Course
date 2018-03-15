@@ -81,11 +81,13 @@ def edit_profile():
     return render_template('edit_profile.html', form=form)
 
 @main.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('.index'))
 
 @main.route('/create-course', methods=['GET', 'POST'])
+@login_required
 def create_course():
     form = CreateCourseForm()
     if form.validate_on_submit():
@@ -101,6 +103,7 @@ def create_course():
     return render_template('create_course.html', form=form)
 
 @main.route('/course-list')
+@login_required
 def course_list():
     courses = []
     for role in current_user.courses:
