@@ -5,9 +5,8 @@
     <div class="row">
         {% for course, teacher in courses %}
         <div class="col-md-4">
-            {{ course.name }}
-            <br />
-            {{ teacher.name }}
+            <h1>{{ course.name }}</h1>
+            <p>教师: {{ teacher.name }}</p>
         </div>
         {% endfor %}
     </div>
