@@ -1,3 +1,5 @@
+# README
+
 服务端框架采用的**flask**，有兴趣参与服务端开发的同学看参考书籍`Flask Web Development`。
 
 **flask**框架模板渲染引擎是**jinja2**，所以有兴趣参与前端开发的同学学习一下**jinja2**。
@@ -47,6 +49,7 @@ $ . venv/bin/activate
 在项目根目录下执行命令`pip install -r requirements.txt`，等待安装完成。
 
 ### 2. 数据库
+
 因为使用的是**sqlite**，所以不需要额外配置数据库。
 
 #### 数据库迁移
@@ -93,4 +96,3 @@ python manage.py shell     # 进入shell模式
 ```
 
 该命令执行后可以看到有这些用户---狗蛋、二狗和二哈。
-
