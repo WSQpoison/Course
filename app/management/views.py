@@ -12,3 +12,7 @@ from werkzeug.utils import secure_filename
 from ..models import *
 from .. import db
 
+@management.route('/course/<id>')
+def course(id):
+    course = Course.query.get_or_404(id)
+    return render_template('course.html', course=course)
