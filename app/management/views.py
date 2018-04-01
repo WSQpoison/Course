@@ -11,8 +11,19 @@ from werkzeug.utils import secure_filename
 # from .forms import *
 from ..models import *
 from .. import db
+from ..util import *
 
 @management.route('/course/<id>')
 def course(id):
     course = Course.query.get_or_404(id)
-    return render_template('course.html', course=course)
+    return render_template('course.html', course=course, teacher=getTeacher(course))
+
+@management.route('/course/<id>/homework-list')
+def homework_list(id):
+    return '<h1> not yet implement </h1>'
+
+@management.route('/course/<id>/publish-homework')
+def publish_homework(id):
+    course = Course.query.get_or_404(id)
+    return '<h1> not yet implement </h1>'
+        

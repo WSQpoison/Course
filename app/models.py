@@ -1,3 +1,4 @@
+from flask import jsonify
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -25,6 +26,14 @@ class User(UserMixin, db.Model):
     def verify_password(self, pw):
         return pw == self.password
 
+    def to_json(self):
+        return jsonify(user_id=self.id, user_name=self.name,
+                       registerTime=self.registerTime, email=self.email,
+                       courses=self.get_courses())
+
+    def get_courses(self):
+        return [course.course_id for course in self.courses]
+
 class Role(db.Model):
     __tablename__ = 'roles'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
@@ -35,10 +44,30 @@ class Role(db.Model):
     course = db.relationship('Course', back_populates='users')
 
 class Course(db.Model):
+    '''
+    课程数据模型
+    '''
     __tablename__ = 'courses'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     users = db.relationship('Role', back_populates='course')
+
+    def to_json(self):
+        users = self.get_users()
+        students = self.get_students(users)
+        teacher = self.get_teacher(users)
+        return jsonify(course_id=self.id, course_name=self.name,
+                       students=students, teacher=teacher)
+
+    def get_users(self):
+        return [{'user_id':role.user_id, 'role':role.role} 
+                for role in self.users]
+
+    def get_students(self, users):
+        return [user['user_id'] for user in users if user['role'] == 'student']
+
+    def get_teacher(self, users):
+        return [user['user_id'] for user in users if user['role'] == 'teacher']
 
 class Post(db.Model):
     __tablename__ = 'posts'

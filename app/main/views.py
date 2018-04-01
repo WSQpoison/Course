@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from .forms import *
 from ..models import *
 from .. import db
+from ..util import *
 
 basedir = 'app'
 
@@ -56,6 +57,10 @@ def post():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     head = get_user_head(current_user.id)
     return render_template('posts.html', form=form, posts=posts, head=head)
+
+@main.route('/asjdfoijqwe')
+def get_form():
+    return json
 
 @main.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
