@@ -26,10 +26,15 @@ def create_app(config_name):
     db.init_app(app)
 
     from .main import main as main_blueprint
-    from .management import management as management_blueprint
+    from .profile import profile as profile_buleprint
+    from .course import course as course_blueprint
+    from .error import error as error_buleprint
     from .api import api as api_blueprint
+
     app.register_blueprint(main_blueprint)
-    app.register_blueprint(management_blueprint)
+    app.register_blueprint(profile_buleprint)
+    app.register_blueprint(course_blueprint)
+    app.register_blueprint(error_buleprint)
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
     return app

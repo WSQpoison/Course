@@ -14,6 +14,32 @@
 
 * 数据库迁移
 
+## 文件结构
+
+```
+|-Course/
+	|-app/										# 程序包
+		|-api/									# api蓝图
+		|-main/									# 主页登录登出相关蓝图
+		|-profile/								# 个人资料相关蓝图
+		|-course/								# 课程相关蓝图
+		|-error/								# 错误处理相关蓝图
+		|-static/								# 图片及css等静态文件
+		|-template/								# html模版
+		|-__init__.py							# 程序工厂函数
+		|-models.py								# 数据库模型
+		|-util.py								# 辅助函数包
+	|-doc/										# 文档
+		|-Request Analysis.docx					# 需求分析文档
+	|-migrations/								# 数据库迁移脚本
+	|-Dockerfile								# Docker
+	|-README.md									# README
+	|-config.py									# 程序配置文件
+	|-data-dev.sqlite							# sqlite数据库
+	|-manage.py									# 启动程序
+	|-requirements.txt							# 依赖包需求文件
+```
+
 ## 项目配置
 
 开发语言：python3

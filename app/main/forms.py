@@ -15,18 +15,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('密码', validators=[DataRequired()])
     submit = SubmitField('登录')
 
-class EditForm(FlaskForm):
-    '''
-    编辑个人资料界面使用的表单
-    '''
-    head = FileField('选择图片')
-    email = StringField('邮箱', validators=[Email()])
-    submit = SubmitField('提交')
-
 class PostForm(FlaskForm):
     body = PageDownField('请输入你的问题', validators=[DataRequired()])
-    submit = SubmitField('提交')
-
-class CreateCourseForm(FlaskForm):
-    course_name = StringField('课程名', validators=[DataRequired()])
     submit = SubmitField('提交')

@@ -25,7 +25,7 @@
             <ul class="nav navbar-nav">
                 {% if current_user.is_authenticated %}
                 <li>
-                    <a href="{{ url_for('main.user_profile', id=current_user.id) }}">
+                    <a href="{{ url_for('profile.user_profile', id=current_user.id) }}">
                         个人简介
                     </a>
                 </li>
@@ -35,12 +35,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_for('main.create_course') }}">
+                    <a href="{{ url_for('course.course_create') }}">
                         创建课程
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_for('main.course_list') }}">
+                    <a href="{{ url_for('course.course_list') }}">
                         课程列表
                     </a>
                 </li>
