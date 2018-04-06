@@ -1,5 +1,12 @@
 # README
 
+## Motivation
+A course project for course management system.
+
+Course: System Analysis and Design
+
+School of Data and Computer Science, Sun Yat-Sen University
+
 服务端框架采用的**flask**，有兴趣参与服务端开发的同学看参考书籍`Flask Web Development`。
 
 **flask**框架模板渲染引擎是**jinja2**，所以有兴趣参与前端开发的同学学习一下**jinja2**。
