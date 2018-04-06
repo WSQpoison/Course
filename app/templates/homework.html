@@ -1,0 +1,6 @@
+{% extends 'course_base.html' %}
+
+{% block page_content %}
+<h1>{{ hw.title }}</h1>
+{{ hw.description_html | safe }}
+{% endblock %}

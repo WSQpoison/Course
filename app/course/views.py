@@ -46,11 +46,32 @@ def course_page(id):
     course = Course.query.get_or_404(id)
     return render_template('course.html', course=course, teacher=getTeacher(course))
 
-@course.route('/course/<id>/homework-list')
+@course.route('/course/<int:id>/homework-list')
 def homework_list(id):
-    return '<h1> not yet implement </h1>'
-
-@course.route('/course/<id>/publish-homework')
-def publish_homework(id):
     course = Course.query.get_or_404(id)
-    return '<h1> not yet implement </h1>'
+    return render_template('homework_list.html', course=course)
+
+@course.route('/course/<int:id>/homework/<int:hw_id>')
+def homework(id, hw_id):
+    course = Course.query.get_or_404(id)
+    homework = Homework.query.get_or_404(hw_id)
+
+    return render_template('homework.html', course=course, hw=homework)
+
+@course.route('/course/<int:id>/publish-homework', methods=['GET', 'POST'])
+def publish_homework(id):
+    form = PublishHomeworkForm()
+    course = Course.query.get_or_404(id)
+
+    if form.validate_on_submit():
+        title = form.title.data
+        desc = form.description.data
+        begin = form.begin_time.data
+        end = form.end_time.data
+
+        hw = Homework(title=title, description=desc, begin_time=begin,
+                      end_time=end, course=course)
+        db.session.add(hw)
+        db.session.commit()
+        return redirect(url_for('.homework_list', id=id))
+    return render_template('publish_homework.html', form=form, course=course)

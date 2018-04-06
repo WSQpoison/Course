@@ -1,0 +1,13 @@
+{% extends 'course_base.html' %}
+
+{% block page_content %}
+{% for hw in course.homework %}
+<div class="col-md-4">
+    <a href="{{ url_for('course.homework', id=course.id, hw_id=hw.id) }}">
+        <h2>{{ hw.title }}</h2>
+    </a>
+    <p>begin: {{ hw.begin_time }}</p>
+    <p>end: {{ hw.end_time }}</p>
+</div>
+{% endfor %}
+{% endblock %}
