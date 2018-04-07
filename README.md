@@ -13,6 +13,7 @@ School of Data and Computer Science, Sun Yat-Sen University
 * 所有用户的可公开资料可任意浏览，用户可以修改自己的资料
 * 支持markdown的简单提问功能（回答功能尚未实现）
 * 创建课程、查看课程列表
+* 发布作业，查看作业，下载作业文件
 
 
 * 数据库迁移

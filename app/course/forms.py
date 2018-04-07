@@ -13,4 +13,5 @@ class PublishHomeworkForm(FlaskForm):
     description = PageDownField('题目描述')
     begin_time = DateTimeField('开始时间', validators=[DataRequired()])
     end_time = DateTimeField('结束时间', validators=[DataRequired()])
+    file = FileField('文件')
     submit = SubmitField('发布')
