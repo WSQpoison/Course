@@ -3,7 +3,7 @@ import random
 
 from . import course
 from flask import Flask, render_template, redirect, url_for, flash, session
-from flask import request
+from flask import request, send_from_directory, send_file
 from flask_login import UserMixin, login_required
 from flask_login import current_user, logout_user, login_user
 from werkzeug.utils import secure_filename
@@ -58,6 +58,15 @@ def homework(id, hw_id):
 
     return render_template('homework.html', course=course, hw=homework)
 
+@course.route('/course/<int:id>/homework/<int:hw_id>/download/')
+def homework_download(id, hw_id):
+    path = 'app/static/course/%d/%d' % (id, hw_id)
+    filename = os.listdir(path)[0]
+    print(path)
+    print(filename)
+
+    return send_from_directory(directory=path[4:], filename=filename, as_attachment=True)
+
 @course.route('/course/<int:id>/publish-homework', methods=['GET', 'POST'])
 def publish_homework(id):
     form = PublishHomeworkForm()
@@ -68,10 +77,17 @@ def publish_homework(id):
         desc = form.description.data
         begin = form.begin_time.data
         end = form.end_time.data
+        file = form.file.data
 
         hw = Homework(title=title, description=desc, begin_time=begin,
                       end_time=end, course=course)
         db.session.add(hw)
         db.session.commit()
+        if file != '':
+            path = 'app/static/course/%d/%d' % (id, hw.id)
+            os.makedirs(path, exist_ok=True)
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(path, filename))
+
         return redirect(url_for('.homework_list', id=id))
     return render_template('publish_homework.html', form=form, course=course)
