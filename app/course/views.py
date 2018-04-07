@@ -1,5 +1,6 @@
 import os
 import random
+import csv
 
 from . import course
 from flask import Flask, render_template, redirect, url_for, flash, session
@@ -34,6 +35,17 @@ def course_create():
         role = Role(role='teacher')
         role.user = current_user
         role.course = course
+
+        file = form.student_list.data
+        if file != '':
+            rand_filename = str(random.randint(0, 100000)) \
+                            + secure_filename(file.filename)
+            path = 'app/static/tmp'
+            os.makedirs(path, exist_ok=True)
+            file.save(os.path.join(path, rand_filename))
+            add_member(os.path.join(path, rand_filename), course)
+            os.remove(os.path.join(path, rand_filename))
+            
         db.session.add(course)
         db.session.add(role)
         db.session.commit()
@@ -91,3 +103,21 @@ def publish_homework(id):
 
         return redirect(url_for('.homework_list', id=id))
     return render_template('publish_homework.html', form=form, course=course)
+
+def createUser(id, name):
+    u = User(id=id, name=name, password=str(id))
+    db.session.add(u)
+    return u
+
+def add_member(filename, course):
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            user = User.query.get(row['id'])
+            if not user:
+                user = createUser(row['id'], row['name'])
+            role = Role(role='student')
+            role.user = user
+            role.course = course
+            db.session.add(role)
+            

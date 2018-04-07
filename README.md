@@ -18,6 +18,12 @@ School of Data and Computer Science, Sun Yat-Sen University
 
 * 数据库迁移
 
+## 部分功能说明
+
+### 创建课程
+
+* 创建课程时，用户可以提供学生名单(暂时只支持csv)，该csv文件至少要提供两个字段*id*，*name*，分别为学生的学号与姓名。系统判断学生是否为已注册用户，若不是则创建该用户，初始密码为*学号*。
+
 ## 文件结构
 
 ```
@@ -35,6 +41,8 @@ School of Data and Computer Science, Sun Yat-Sen University
         |-util.py                   # 辅助函数包
     |-doc/                          # 文档
         |-Request Analysis.docx     # 需求分析文档
+    |-test/							# 测试工具
+        |student_list.py			# 随机生成学生名单
     |-migrations/                   # 数据库迁移脚本
     |-Dockerfile                    # Docker
     |-README.md                     # README
@@ -126,3 +134,9 @@ python manage.py shell     # 进入shell模式
 ```
 
 该命令执行后可以看到有这些用户---狗蛋、二狗和二哈。
+
+## 测试
+
+### 学生名单生成
+
+为了方便开发时测试，在test文件夹里的student_list.py提供了随机生成学生名单的功能。

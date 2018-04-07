@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired, Length, Email
 
 class CreateCourseForm(FlaskForm):
     course_name = StringField('课程名', validators=[DataRequired()])
+    student_list = FileField('学生名单')
     submit = SubmitField('提交')
 
 class PublishHomeworkForm(FlaskForm):

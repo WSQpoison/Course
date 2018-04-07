@@ -13,7 +13,7 @@ class User(UserMixin, db.Model):
     用户数据模型
     '''
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(64), primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
     password = db.Column(db.String(64))
     registerTime = db.Column(db.DateTime, default=datetime.utcnow)
