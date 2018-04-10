@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, current_app
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -27,11 +27,11 @@ class User(UserMixin, db.Model):
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config['SECRET_KEY'],
                        expires_in=expiration)
-        return s.dumps({'id': self.id})
+        return s.dumps({'id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_auth_token(token):
-        s = Serializer(current_app.config('SECRET_KEY'))
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
         except:
@@ -42,9 +42,14 @@ class User(UserMixin, db.Model):
         return pw == self.password
 
     def to_json(self):
-        return jsonify(user_id=self.id, user_name=self.name,
-                       registerTime=self.registerTime, email=self.email,
-                       courses=self.get_courses())
+        json_user = {
+            user_id: self.id,
+            user_name: self.name,
+            registerTime: self.registerTime,
+            email: self.email,
+            courses: self.get_courses()
+        }
+        return json_user
 
     def get_courses(self):
         return [course.course_id for course in self.courses]
@@ -72,8 +77,13 @@ class Course(db.Model):
         users = self.get_users()
         students = self.get_students()
         teacher = self.get_teacher()
-        return jsonify(course_id=self.id, course_name=self.name,
-                       students=students, teacher=teacher)
+        json_course = {
+            'course_id': self.id,
+            'course_name': self.name,
+            'students': students,
+            'teacher': teacher,
+        }
+        return json_course
 
     def get_users(self):
         return [{'user_id':role.user_id, 'role':role.role} 
