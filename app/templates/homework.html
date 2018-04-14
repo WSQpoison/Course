@@ -3,5 +3,9 @@
 {% block page_content %}
 <h1>{{ hw.title }}</h1>
 {{ hw.description_html | safe }}
-<a href="{{ url_for('course.homework_download', id=course.id, hw_id=hw.id) }}">下载文件</a>
+{% if role == 'student' %}
+    <a href="{{ url_for('course.homework_get', id=course.id, hw_id=hw.id) }}">下载文件</a>
+{% else %}
+    <a href="{{ url_for('course.homework_download', id=course.id, hw_id=hw.id)}}">下载作业</a>
+{% endif %}
 {% endblock %}

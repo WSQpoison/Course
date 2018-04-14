@@ -46,7 +46,7 @@
                 </li>	
                 {% if current_user.id in course.get_teacher() %}
                 <li>	
-                    <a href="{{ url_for('course.publish_homework', id=course.id) }}">	
+                    <a href="{{ url_for('course.homework_publish', id=course.id) }}">	
                         发布作业	
                     </a>	
                 </li>	

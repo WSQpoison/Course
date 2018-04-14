@@ -1,30 +1,66 @@
 # README
 
-## Motivation
+## 1. Motivation
 A course project for course management system.
 
 Course: System Analysis and Design
 
 School of Data and Computer Science, Sun Yat-Sen University
 
-## 目前已实现功能
+## 2. 项目配置
 
-* 用户登录、登出
-* 所有用户的可公开资料可任意浏览，用户可以修改自己的资料
-* 支持markdown的简单提问功能（回答功能尚未实现）
-* 创建课程、查看课程列表
-* 发布作业，查看作业，下载作业文件
+开发语言：python3
 
+开发平台：Linux 或 macOS
 
-* 数据库迁移
+注意：由于windows上某些依赖包无法安装，所以请在Linux或macOS上进行开发。
 
-## 部分功能说明
+### 2.1 依赖包安装
 
-### 创建课程
+**安装依赖之前强烈建议用conda或virtualenv创建一个新的python3环境。**
 
-* 创建课程时，用户可以提供学生名单(暂时只支持csv)，该csv文件至少要提供两个字段*id*，*name*，分别为学生的学号与姓名。系统判断学生是否为已注册用户，若不是则创建该用户，初始密码为*学号*。
+**virtualenv**安装及使用教程：
 
-## 文件结构
+```shell
+# macOS或Linux安装命令
+$ sudo easy_install virtualenv
+# or
+$ sudo pip install virtualenv
+# Ubuntu可以使用
+$ sudo apt-get install python-virtualenv
+
+# virtual安装好后进入项目文件夹，在其下建立venv文件夹
+$ cd project
+$ virtualenv venv
+
+# 当你要在项目中进行开发时，只需执行以下命令激活vene
+$ . venv/bin/activate
+```
+
+安装依赖包：
+
+在项目根目录下执行命令`pip install -r requirements.txt`，等待安装完成。
+
+### 2.2 数据库
+
+因为使用的是**sqlite**，所以不需要额外配置数据库。
+
+#### 数据库迁移
+
+开发阶段如果对数据库模型进行了修改，可以通过以下命令更新数据库，同时不影响数据库中已存在的记录。
+
+```python
+python manage.py db migrate -m 'xxxxxxxx'
+python manage.py db upgrade
+```
+
+其中'xxxxxxxx'为对本次更新的描述。
+
+### 2.3 运行
+
+项目根目录下执行命令`python manage.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。
+
+## 3. 文件结构
 
 ```
 |-Course/
@@ -52,69 +88,24 @@ School of Data and Computer Science, Sun Yat-Sen University
     |-requirements.txt              # 依赖包需求文件
 ```
 
-## 项目配置
+## 4. 目前已实现功能
 
-开发语言：python3
+* 用户登录、登出
+* 所有用户的可公开资料可任意浏览，用户可以修改自己的资料
+* 支持markdown的简单提问功能（回答功能尚未实现）
+* 创建课程、查看课程列表
+* 发布作业，查看作业，学生下载作业文件，老师下载学生作业
 
-开发平台：Linux 或 macOS
 
-注意：由于windows上某些依赖包无法安装，所以请在Linux或macOS上进行开发。
+* 数据库迁移
 
-### 1. 依赖包安装
+## 5. 部分功能说明
 
-**安装依赖之前强烈建议用conda或virtualenv创建一个新的python3环境。**
+### 5.1 创建课程
 
-**virtualenv**安装及使用教程：
+* 创建课程时，用户可以提供学生名单(暂时只支持csv)，该csv文件至少要提供两个字段*id*，*name*，分别为学生的学号与姓名。系统判断学生是否为已注册用户，若不是则创建该用户，初始密码为*学号*。
 
-```shell
-# macOS或Linux安装命令
-$ sudo easy_install virtualenv
-# or
-$ sudo pip install virtualenv
-# Ubuntu可以使用
-$ sudo apt-get install python-virtualenv
-
-# virtual安装好后进入项目文件夹，在其下建立venv文件夹
-$ cd project
-$ virtualenv venv
-
-# 当你要在项目中进行开发时，只需执行以下命令激活vene
-$ . venv/bin/activate
-```
-
-安装依赖包：
-
-在项目根目录下执行命令`pip install -r requirements.txt`，等待安装完成。
-
-### 2. 数据库
-
-因为使用的是**sqlite**，所以不需要额外配置数据库。
-
-#### 数据库迁移
-
-开发阶段如果对数据库模型进行了修改，可以通过以下命令更新数据库，同时不影响数据库中已存在的记录。
-
-```python
-python manage.py db migrate -m 'xxxxxxxx'
-python manage.py db upgrade
-```
-
-其中'xxxxxxxx'为对本次更新的描述。
-
-### 3. 运行
-
-项目根目录下执行命令`python manage.py runserver`，然后在浏览器地址栏输入`localhost:5000`即可进入登录页面。
-
-## 用户创建
-
-GitHub中的数据库里已经创建了以下用户
-
-| 账号     | 密码 | 用户名 |
-| -------- | ---- | ------ |
-| 11111111 | abc  | 狗蛋   |
-| 22222222 | abc  | 二狗   |
-
-### 1. 如何创建用户
+### 5.2 如何创建用户
 
 因为还没有实现管理员的功能，所以用户创建只能直接修改数据库。
 
@@ -135,7 +126,16 @@ python manage.py shell     # 进入shell模式
 
 该命令执行后可以看到有这些用户---狗蛋、二狗和二哈。
 
-## 测试
+## 5.3 已创建用户
+
+GitHub中的数据库里已经创建了以下用户
+
+| 账号     | 密码 | 用户名 |
+| -------- | ---- | ------ |
+| 11111111 | abc  | 狗蛋   |
+| 22222222 | abc  | 二狗   |
+
+## 6. 测试
 
 ### 学生名单生成
 

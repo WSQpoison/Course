@@ -1,6 +1,7 @@
 import os
 import random
 import csv
+import zipfile
 
 from . import course
 from flask import Flask, render_template, redirect, url_for, flash, session
@@ -67,11 +68,14 @@ def homework_list(id):
 def homework(id, hw_id):
     course = Course.query.get_or_404(id)
     homework = Homework.query.get_or_404(hw_id)
+    if current_user.id in course.get_teacher():
+        role = 'teacher'
+    else:
+        role = 'student'
+    return render_template('homework.html', course=course, hw=homework, role=role)
 
-    return render_template('homework.html', course=course, hw=homework)
-
-@course.route('/course/<int:id>/homework/<int:hw_id>/download/')
-def homework_download(id, hw_id):
+@course.route('/course/<int:id>/homework/<int:hw_id>/get')
+def homework_get(id, hw_id):
     path = 'app/static/course/%d/%d' % (id, hw_id)
     filename = os.listdir(path)[0]
     print(path)
@@ -79,8 +83,8 @@ def homework_download(id, hw_id):
 
     return send_from_directory(directory=path[4:], filename=filename, as_attachment=True)
 
-@course.route('/course/<int:id>/publish-homework', methods=['GET', 'POST'])
-def publish_homework(id):
+@course.route('/course/<int:id>/homework-publish', methods=['GET', 'POST'])
+def homework_publish(id):
     form = PublishHomeworkForm()
     course = Course.query.get_or_404(id)
 
@@ -103,6 +107,36 @@ def publish_homework(id):
 
         return redirect(url_for('.homework_list', id=id))
     return render_template('publish_homework.html', form=form, course=course)
+
+@course.route('/course/<int:id>/homework/<int:hw_id>/download', methods=['GET', 'POST'])
+@login_required
+def homework_download(id, hw_id):
+    """Teacher downloads the students' homeworks.
+    This comment will be completed next time.
+    """
+    path = 'app/static/course/%d/%d' % (id, hw_id)
+    if os.path.exists(path):
+        course = Course.query.get_or_404(id)
+        homework = Homework.query.get_or_404(hw_id)
+        filelists = os.listdir(path)
+        print(filelists)
+
+        if filelists == None or len(filelists) < 1:
+            print('No homework submitted!')
+        else:
+            zipname = course.name + '_' + homework.title + '.zip'
+            zippath = path + '/' + zipname
+            if os.path.exists(zippath):
+                os.remove(zippath)
+                filelists.remove(zipname)
+                print(filelists)
+            zip = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
+            for file in filelists:
+                filepath = os.path.join(path, file)
+                zip.write(filepath, file)
+            zip.close()
+            return send_from_directory(directory=path[4:], filename=zipname, as_attachment=True)
+    return redirect(url_for('.homework', id=id, hw_id=hw_id))
 
 def createUser(id, name):
     u = User(id=id, name=name, password=str(id))
