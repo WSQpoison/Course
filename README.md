@@ -77,8 +77,8 @@ python manage.py db upgrade
         |-util.py                   # 辅助函数包
     |-doc/                          # 文档
         |-Request Analysis.docx     # 需求分析文档
-    |-test/							# 测试工具
-        |student_list.py			# 随机生成学生名单
+    |-test/                         # 测试工具
+        |-student_list.py            # 随机生成学生名单
     |-migrations/                   # 数据库迁移脚本
     |-Dockerfile                    # Docker
     |-README.md                     # README

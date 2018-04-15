@@ -65,6 +65,7 @@ def homework_list(id):
     return render_template('homework_list.html', course=course)
 
 @course.route('/course/<int:id>/homework/<int:hw_id>')
+@login_required
 def homework(id, hw_id):
     course = Course.query.get_or_404(id)
     homework = Homework.query.get_or_404(hw_id)
@@ -75,6 +76,7 @@ def homework(id, hw_id):
     return render_template('homework.html', course=course, hw=homework, role=role)
 
 @course.route('/course/<int:id>/homework/<int:hw_id>/get')
+@login_required
 def homework_get(id, hw_id):
     path = 'app/static/course/%d/%d' % (id, hw_id)
     filelists = os.listdir(path)
@@ -88,6 +90,7 @@ def homework_get(id, hw_id):
     return send_from_directory(directory=path[4:], filename=filename, as_attachment=True)
 
 @course.route('/course/<int:id>/homework-publish', methods=['GET', 'POST'])
+@login_required
 def homework_publish(id):
     form = PublishHomeworkForm()
     course = Course.query.get_or_404(id)
@@ -111,7 +114,7 @@ def homework_publish(id):
             file.save(os.path.join(path, filename))
 
         return redirect(url_for('.homework_list', id=id))
-    return render_template('publish_homework.html', form=form, course=course)
+    return render_template('homework_publish.html', form=form, course=course)
 
 @course.route('/course/<int:id>/homework/<int:hw_id>/download', methods=['GET', 'POST'])
 @login_required
@@ -142,6 +145,24 @@ def homework_download(id, hw_id):
             zip.close()
             return send_from_directory(directory=path[4:], filename=zipname, as_attachment=True)
     return redirect(url_for('.homework', id=id, hw_id=hw_id))
+
+@course.route('/course/<int:id>/homework/<int:hw_id>/submit', methods=['GET', 'POST'])
+@login_required
+def homework_submit(id, hw_id):
+    """Student submits homework.
+    """
+    course = Course.query.get_or_404(id)
+    form = SubmitHomeworkForm()
+    if form.validate_on_submit():
+        file = form.file.data
+        path = 'app/static/course/%d/%d' % (id, hw_id)
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(path, filename))
+        print(path)
+        print(filename)
+        flash('Successful submit!')
+        return redirect(url_for('.homework', id=id, hw_id=hw_id))
+    return render_template('homework_submit.html', form=form, course=course, id=id, hw_id=hw_id)
 
 def createUser(id, name):
     u = User(id=id, name=name, password=str(id))
