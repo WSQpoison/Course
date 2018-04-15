@@ -135,6 +135,9 @@ class Homework(db.Model):
         target.description_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
+    
+    def __repr__(self):
+        return '<Homework %s %d>' % (self.title, self.id)
 
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)

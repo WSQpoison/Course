@@ -77,10 +77,14 @@ def homework(id, hw_id):
 @course.route('/course/<int:id>/homework/<int:hw_id>/get')
 def homework_get(id, hw_id):
     path = 'app/static/course/%d/%d' % (id, hw_id)
-    filename = os.listdir(path)[0]
-    print(path)
-    print(filename)
-
+    filelists = os.listdir(path)
+    if len(filelists) < 1:
+        flash('No homework info file')
+        return redirect(url_for('.homework', id=id, hw_id=hw_id))
+    else:
+        print(path)
+        print(filename)
+        filename = filelists[0]
     return send_from_directory(directory=path[4:], filename=filename, as_attachment=True)
 
 @course.route('/course/<int:id>/homework-publish', methods=['GET', 'POST'])
@@ -99,9 +103,10 @@ def homework_publish(id):
                       end_time=end, course=course)
         db.session.add(hw)
         db.session.commit()
+
+        path = 'app/static/course/%d/%d' % (id, hw.id)
+        os.makedirs(path, exist_ok=True)
         if file != '':
-            path = 'app/static/course/%d/%d' % (id, hw.id)
-            os.makedirs(path, exist_ok=True)
             filename = secure_filename(file.filename)
             file.save(os.path.join(path, filename))
 
