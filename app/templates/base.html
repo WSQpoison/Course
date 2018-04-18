@@ -25,7 +25,7 @@
             <ul class="nav navbar-nav">
                 {% if current_user.is_authenticated %}
                 <li>
-                    <a href="{{ url_for('profile.user_profile', id=current_user.id) }}">
+                    <a href="{{ url_for('profile.profile_user', id=current_user.id) }}">
                         个人简介
                     </a>
                 </li>

@@ -15,15 +15,15 @@ from ..util import *
 
 basedir = 'app'
 
-@profile.route('/user_profile/<id>')
-def user_profile(id):
+@profile.route('/profile_user/<id>')
+def profile_user(id):
     head = get_user_head(id)
     user = User.query.filter_by(id=id).first()
-    return render_template('user_profile.html', user=user, head=head)
+    return render_template('profiles/profile_user.html', user=user, head=head)
 
-@profile.route('/edit_profile', methods=['GET', 'POST'])
+@profile.route('/profile_edit', methods=['GET', 'POST'])
 @login_required
-def edit_profile():
+def profile_edit():
     form = EditForm()
     if form.validate_on_submit():
         current_user.email = form.email.data
@@ -40,6 +40,6 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         flash('个人简介更新成功')
-        return redirect(url_for('.user_profile', id=current_user.id))
+        return redirect(url_for('.profile_user', id=current_user.id))
     form.email.data = current_user.email
-    return render_template('edit_profile.html', form=form)
+    return render_template('profiles/profile_edit.html', form=form)

@@ -25,7 +25,7 @@
             <ul class="nav navbar-nav">	
                 {% if current_user.is_authenticated %}	
                 <li>	
-                    <a href="{{ url_for('profile.user_profile', id=current_user.id) }}">	
+                    <a href="{{ url_for('profile.profile_user', id=current_user.id) }}">	
                         个人简介	
                     </a>	
                 </li>	
@@ -40,13 +40,13 @@
                     </a>	
                 </li>	
                 <li>	
-                    <a href="{{ url_for('course.homework_list', id=course.id) }}">	
+                    <a href="{{ url_for('homework.homework_list', id=course.id) }}">	
                         课程作业	
                     </a>	
                 </li>	
                 {% if current_user.id in course.get_teacher() %}
                 <li>	
-                    <a href="{{ url_for('course.homework_publish', id=course.id) }}">	
+                    <a href="{{ url_for('homework.homework_publish', id=course.id) }}">	
                         发布作业	
                     </a>	
                 </li>	

@@ -1,0 +1,12 @@
+{% extends 'courses/course_base.html' %}
+
+{% block page_content %}
+<h1>{{ hw.title }}</h1>
+{{ hw.description_html | safe }}
+{% if role == 'student' %}
+    <a href="{{ url_for('homework.homework_get', id=course.id, hw_id=hw.id) }}">下载文件</a>
+    <a href="{{ url_for('homework.homework_submit', id=course.id, hw_id=hw.id) }}">提交作业</a>
+{% else %}
+    <a href="{{ url_for('homework.homework_download', id=course.id, hw_id=hw.id)}}">下载作业</a>
+{% endif %}
+{% endblock %}

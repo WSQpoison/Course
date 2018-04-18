@@ -18,7 +18,7 @@ basedir = 'app'
 @main.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('profile.user_profile', id=current_user.id))
+        return redirect(url_for('profile.profile_user', id=current_user.id))
     return redirect('/login')
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -29,9 +29,9 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, False)
             return redirect(request.args.get('next')
-                            or url_for('profile.user_profile', id=user.id))
+                            or url_for('profile.profile_user', id=user.id))
         flash('学号或密码错误')
-    return render_template('login.html', form=form)
+    return render_template('auths/login.html', form=form)
 
 @main.route('/users')
 def users():
@@ -51,7 +51,7 @@ def post():
         return redirect(url_for('.post'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     head = get_user_head(current_user.id)
-    return render_template('posts.html', form=form, posts=posts, head=head)
+    return render_template('posts/post.html', form=form, posts=posts, head=head)
 
 @main.route('/logout')
 @login_required
