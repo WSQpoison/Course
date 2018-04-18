@@ -65,11 +65,12 @@ python manage.py db upgrade
 ```
 |-Course/
     |-app/                          # 程序包
-        |-api/                      # api蓝图
-        |-main/                     # 主页登录登出相关蓝图
-        |-profile/                  # 个人资料相关蓝图
-        |-course/                   # 课程相关蓝图
-        |-error/                    # 错误处理相关蓝图
+        |-api/                      # api模块蓝图
+        |-main/                     # 主页登录登出相关模块蓝图
+        |-profile/                  # 个人资料相关模块蓝图
+        |-course/                   # 课程相关模块蓝图
+        |-homework/                 # 作业相关模块蓝图
+        |-error/                    # 错误处理相关模块蓝图
         |-static/                   # 图片及css等静态文件
         |-template/                 # html模版
         |-__init__.py               # 程序工厂函数
@@ -78,7 +79,7 @@ python manage.py db upgrade
     |-doc/                          # 文档
         |-Request Analysis.docx     # 需求分析文档
     |-test/                         # 测试工具
-        |-student_list.py            # 随机生成学生名单
+        |-student_list.py           # 随机生成学生名单
     |-migrations/                   # 数据库迁移脚本
     |-Dockerfile                    # Docker
     |-README.md                     # README
