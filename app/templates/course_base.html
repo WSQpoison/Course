@@ -7,11 +7,79 @@
 <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 <!-- <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"> -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" type="text/css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    body {
+        position: relative; 
+    }
+    .zoomIn {
+        -webkit-animation-name: zoomIn;
+        animation-name: zoomIn;
+    }
+    .animated {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+    @-webkit-keyframes zoomIn {
+        0% {
+            opacity: 0;
+            -webkit-transform: scale(.3);
+            transform: scale(.3);
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+    @keyframes zoomIn {
+        0% {
+            opacity: 0;
+            -webkit-transform: scale(.3);
+            -ms-transform: scale(.3);
+            transform: scale(.3);
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes longerOne {
+        100% {width: 500px;}
+    }
+
+    @-webkit-keyframes longerOne {
+        100% {width: 500px;}
+    }
+
+    @keyframes longerTwo {
+        100% {width: 675px;}
+    }
+
+    @-webkit-keyframes longerTwo {
+        100% {width: 675px;}
+    }
+
+    @keyframes longerThree {
+        100% {width: 1000px;}
+    }
+
+    @-webkit-keyframes longerThree {
+        100% {width: 1000px;}
+    }
+
+</style>
 {% endblock %}
 
-{% block navbar %}	
-<div class="navbar navbar-inverse" role="navigation">	
-    <div class="container">	
+{% block navbar %}
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
         <div class="navbar-header">	
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">	
                 <span class="sr-only">Toggle navigation</span>	
@@ -23,14 +91,14 @@
         </div>	
         <div class="navbar-collapse collapse">	
             <ul class="nav navbar-nav">	
-                {% if current_user.is_authenticated %}	
+				{% if current_user.is_authenticated %}	
                 <li>	
-                    <a href="{{ url_for('profile.user_profile', id=current_user.id) }}">	
+                    <a href="{{ url_for('profile.profile_user', id=current_user.id) }}">
                         个人简介	
                     </a>	
                 </li>	
                 <li>	
-                    <a href="{{ url_for('course.course_create') }}">	
+                    <a href="{{ url_for('course.course_create') }}">
                         创建课程	
                     </a>	
                 </li>	
@@ -40,21 +108,21 @@
                     </a>	
                 </li>	
                 <li>	
-                    <a href="{{ url_for('course.homework_list', id=course.id) }}">	
+                    <a href="{{ url_for('homework.homework_list', id=course.id) }}">	
                         课程作业	
                     </a>	
-                </li>	
-                {% if current_user.id in course.get_teacher() %}
+                </li>
+                {% if current_user.id in course.get_teacher() %}	
                 <li>	
-                    <a href="{{ url_for('course.publish_homework', id=course.id) }}">	
+                    <a href="{{ url_for('homework.homework_publish', id=course.id) }}">	
                         发布作业	
                     </a>	
                 </li>	
                 {% endif %}
-                {% endif %}	
+                {% endif %}		
             </ul>	
-            <ul class="nav navbar-nav navbar-right">	
-                {% if current_user.is_authenticated %}	
+            <ul class="nav navbar-nav navbar-right">
+            	{% if current_user.is_authenticated %}		
                 <li>	
                     <a href="{{ url_for('main.logout') }}">	
                         登出	
@@ -68,6 +136,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -77,8 +146,21 @@
     {% endfor %}
 </div>
 <div class="container">
-    {% block page_content %}{% endblock %}
+    {% block page_content %}
+    <section style="min-height: 400px; background-color: white">
+        <div class="animated zoomIn animated" style="visibility: visible; padding-top: 80px; animation-delay: 0.5s; animation-name: zoomIn;">
+            <h1 style="color: black; font-size: 4rem;"><span></span>Course Master</h1>
+        </div>
+    </section>
+
+    <div style="width: 100px; height: 25px; background-color: #1E88E5; margin-bottom: 20px; animation-name: longerOne 1s; -webkit-animation: longerOne 2s; animation-fill-mode: both;"></div>
+    <div style="width: 200px; height: 25px; background-color: #993333; margin-bottom: 20px; animation: longerTwo 2s; -webkit-animation: longerTwo 2s; animation-fill-mode: both;"></div>
+    <div style="width: 500px; height: 25px; background-color: #00bcd4; animation: longerThree 2s; -webkit-animation: longerThree 2s; animation-fill-mode: both;"></div>
+
+
+    {% endblock %}
 </div>
+
 {% endblock %}
 
 {% block scripts %}

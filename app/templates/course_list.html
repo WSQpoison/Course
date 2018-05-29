@@ -1,17 +1,45 @@
-{% extends "base.html" %}
+{% extends "courses/course_base.html" %}
 
-{% block page_content %}
-<div class="container">
-    <div class="row">
-        {% for course, teacher in courses %}
-        <div class="col-md-4">
-            <a href="{{ url_for('course.course_page', id=course.id) }}" >
-                <h1>{{ course.name }}</h1>
-                <p>教师: {{ teacher.name }}</p>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-    </div>
+{% block head %}
+  <meta charset="utf-8">
+    <title>course_list</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            position: relative; 
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+{% set bgcolor = 1 %}
+
+{% for course, teacher in courses %}
+<div style="padding-top: 50px; height: 200px; color: #fff; background-color: {% if bgcolor is equalto 1 %}
+    #1E88E5
+    {% elif bgcolor is equalto 2 %}
+    #673ab7
+    {% elif bgcolor is equalto 3 %}
+    #ff9800
+    {% elif bgcolor is equalto 4 %}
+    #00bcd4
+    {% else %}
+    #009688
+    {% endif %};" class = "container-fluid">
+    <a href="{{ url_for('course.course_page', id=course.id) }}" >
+        <h1 style="color: white;">{{ course.name }}</h1>
+        <p style="color: white;">教师: {{ teacher.name }}</p>
+    </a>
 </div>
+{% set bgcolor = bgcolor + 1 %}
+{% if bgcolor is equalto 6 %}
+    {% set bgcolor = 1 %}
+{% endif %}
+{% endfor %}
+
 {% endblock %}

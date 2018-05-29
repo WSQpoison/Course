@@ -1,8 +1,14 @@
-{% extends "base.html" %}
+{% extends "courses/course_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
 <div class="container">
+	<section style="min-height: 200px; background-color: white">
+        <div class="animated zoomIn animated" style="visibility: visible; padding-top: 80px; animation-delay: 0.5s; animation-name: zoomIn;">
+            <h1 style="color: black; font-size: 4rem;"><span></span>Course Master</h1>
+        </div>
+    </section>
+
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             {{ wtf.quick_form(form) }}

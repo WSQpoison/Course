@@ -1,6 +1,38 @@
-{% extends "course_base.html" %}
+{% extends "courses/course_base.html" %}
+
+{% block head %}
+   <meta charset="utf-8"> 
+   <title>course</title>
+   <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+   <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+   <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
 
 {% block page_content %}
-<h1>{{ course.name }}</h1>
-<h2>教师: {{ teacher.name }} </h2>
+<div class="container">
+<section class="row" style="min-height: 400px; background-color: white;">
+	<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding: 0px;">
+		<div style="background-color: #993333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; min-height: 400px; padding: 3rem">
+			<h1 style="color: white; font-size: 4rem; ">{{ course.name }}</h1>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding: 0px">
+		<div style="width: 100%; height: 100%; display: flex;align-items: center; justify-content: center; min-height: 400px; padding: 3rem">
+		<h1 style="color:#666666; font-size: 4rem;"> 学而时习之，不亦说乎</h1>
+		</div>
+	</div>
+</section>
+<section class="row" style="flex-direction: column-reverse; min-height: 400px; background-color: white;">
+	<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding: 0px">
+		<div style="width: 100%; height: 100%; display: flex;align-items: center; justify-content: center; min-height: 400px; padding: 3rem">
+		<h1 style="color:#666666; font-size: 4rem;">书犹药也，可以医愚</h1>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6" style="padding: 0px;">
+		<div style="background-color: #993333; padding: 3rem; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; min-height: 400px;">
+			<h2 style="color: white; font-size: 4rem; ">教师: {{ teacher.name }} </h2>
+		</div>
+	</div>
+</section>
+</div>
 {% endblock %}
